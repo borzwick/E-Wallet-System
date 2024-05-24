@@ -1,0 +1,236 @@
+//////MAIN WINDOW CLASS------------------------------------------------------------------------------------------------------------------------
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class MainWindow extends JFrame implements ActionListener {
+    private JLabel balanceLabel;
+    private JButton cashInButton, cashOutButton, checkHistoryButton, checkBalanceButton, logoutButton;
+    private Account account;
+
+    public MainWindow(Account account) {
+        this.account = account;
+
+        setTitle("E-Wallet System");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 300);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+
+        cashInButton = new JButton("Cash In");
+        cashOutButton = new JButton("Cash Out");
+        checkHistoryButton = new JButton("Check History");
+        checkBalanceButton = new JButton("Check Balance");
+        logoutButton = new JButton("Logout");
+
+        cashInButton.addActionListener(this);
+        cashOutButton.addActionListener(this);
+        checkHistoryButton.addActionListener(this);
+        checkBalanceButton.addActionListener(this);
+        logoutButton.addActionListener(this);
+
+        panel.add(cashInButton);
+        panel.add(cashOutButton);
+        panel.add(checkHistoryButton);
+        panel.add(checkBalanceButton);
+        panel.add(logoutButton);
+
+        balanceLabel = new JLabel("Current balance: Php. " + account.getBalance());
+        balanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(balanceLabel, BorderLayout.NORTH);
+
+        add(panel, BorderLayout.CENTER);
+
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == logoutButton) {
+            dispose(); // Close the main window
+            new LoginWindow().setVisible(true); // Open the login window
+        } else if (e.getSource() == cashInButton) {
+            // Placeholder for cash-in operation
+            String amountStr = JOptionPane.showInputDialog(this, "Enter amount to cash in:");
+            if (amountStr != null && !amountStr.isEmpty()) {
+                try {
+                    double amount = Double.parseDouble(amountStr);
+                    if (amount > 0) {
+                        account.setBalance(account.getBalance() + amount);
+                        JOptionPane.showMessageDialog(this, "Cash in successful. New balance: Php. " + account.getBalance());
+                        updateBalanceLabel();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Invalid amount. Please enter a positive value.");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid number.");
+                }
+            }
+        } else if (e.getSource() == cashOutButton) {
+            // Placeholder for cash-out operation
+            String amountStr = JOptionPane.showInputDialog(this, "Enter amount to cash out:");
+            if (amountStr != null && !amountStr.isEmpty()) {
+                try {
+                    double amount = Double.parseDouble(amountStr);
+                    if (amount > 0 && amount <= account.getBalance()) {
+                        account.setBalance(account.getBalance() - amount);
+                        JOptionPane.showMessageDialog(this, "Cash out successful. New balance: Php. " + account.getBalance());
+                        updateBalanceLabel();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Invalid amount or insufficient balance.");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid number.");
+                }
+            }
+        } else if (e.getSource() == checkHistoryButton) {
+            // Placeholder for check history operation
+            JOptionPane.showMessageDialog(this, "Display transaction history here.");
+        } else if (e.getSource() == checkBalanceButton) {
+            // Placeholder for check balance operation
+            JOptionPane.showMessageDialog(this, "Current balance: Php. " + account.getBalance());
+        }
+    }
+
+    private void updateBalanceLabel() {
+        balanceLabel.setText("Current balance: Php. " + account.getBalance());
+    }
+}
+
+
+
+
+////// LOGIN WINDOW CLASS----------------------------------------------------------------------------------------------------------------------------------
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class LoginWindow extends JFrame implements ActionListener {
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton loginButton, signUpButton;
+
+    public LoginWindow() {
+        setTitle("Login");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300, 200);
+        setLocationRelativeTo(null);
+
+        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+
+        JLabel usernameLabel = new JLabel("Username:");
+        JLabel passwordLabel = new JLabel("Password:");
+        usernameField = new JTextField();
+        passwordField = new JPasswordField();
+        loginButton = new JButton("Login");
+        signUpButton = new JButton("Sign Up");
+
+        loginButton.addActionListener(this);
+        signUpButton.addActionListener(this);
+
+        panel.add(usernameLabel);
+        panel.add(usernameField);
+        panel.add(passwordLabel);
+        panel.add(passwordField);
+        panel.add(loginButton);
+        panel.add(signUpButton);
+
+        add(panel, BorderLayout.CENTER);
+
+        setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == loginButton) {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+
+            if (AccountManager.accountExists(username) && AccountManager.getAccount(username).getPassword().equals(password)) {
+                dispose();
+                new MainWindow(AccountManager.getAccount(username));
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid username or password.");
+            }
+        } else if (e.getSource() == signUpButton) {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Username and password cannot be empty.");
+            } else if (AccountManager.accountExists(username)) {
+                JOptionPane.showMessageDialog(this, "Account already exists. Make a new one.");
+            } else {
+                // Add new user with initial balance of 0.0 PHP
+                Account account = new Account(username, password, 0.0);
+                AccountManager.addAccount(account);
+                JOptionPane.showMessageDialog(this, "Account created successfully.");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(LoginWindow::new);
+    }
+}
+
+
+//ACCOUNT MANAGER CLASS------------------------------------------------------------------------------------------------------------
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class AccountManager {
+    private static Map<String, Account> accounts = new HashMap<>();
+
+    public static void addAccount(Account account) {
+        accounts.put(account.getUsername(), account);
+    }
+
+    public static Account getAccount(String username) {
+        return accounts.get(username);
+    }
+
+    public static boolean accountExists(String username) {
+        return accounts.containsKey(username);
+    }
+
+    // Other methods for account management
+}
+
+
+//ACCOUNT CLASS----------------------------------------------------------------------------------------------------------------
+
+public class Account {
+    private String username;
+    private String password;
+    private double balance;
+
+    public Account(String username, String password, double balance) {
+        this.username = username;
+        this.password = password;
+        this.balance = balance;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+}
+
