@@ -1,8 +1,6 @@
 ////// LOGIN WINDOW CLASS----------------------------------------------------------------------------------------------------------------------------------
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,65 +9,85 @@ public class LoginWindow extends JFrame implements ActionListener {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton, signUpButton;
-    private JLabel welcomeLabel;
 
     public LoginWindow() {
-        
-        setTitle("Login");
+        setTitle("E-Wallet Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(320, 200);
+        setSize(400, 300);
         setLocationRelativeTo(null);
+        setResizable(false);
 
-        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+        // Set up color scheme
+        Color primaryColor = new Color(51, 102, 255);
+        Color secondaryColor = new Color(230, 230, 230);
+
+        // Create components
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(secondaryColor);
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(10, 10, 10, 10);
+
+        JLabel titleLabel = new JLabel("E-Wallet Login");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(primaryColor);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.CENTER;
+        panel.add(titleLabel, c);
 
         JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setForeground(primaryColor);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.anchor = GridBagConstraints.LINE_END;
+        panel.add(usernameLabel, c);
+
+        usernameField = new JTextField(15);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.anchor = GridBagConstraints.LINE_START;
+        panel.add(usernameField, c);
+
         JLabel passwordLabel = new JLabel("Password:");
-        usernameField = new JTextField();
-        passwordField = new JPasswordField();
+        passwordLabel.setForeground(primaryColor);
+        c.gridx = 0;
+        c.gridy = 2;
+        c.anchor = GridBagConstraints.LINE_END;
+        panel.add(passwordLabel, c);
+
+        passwordField = new JPasswordField(15);
+        c.gridx = 1;
+        c.gridy = 2;
+        c.anchor = GridBagConstraints.LINE_START;
+        panel.add(passwordField, c);
+
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 0)); // Evenly spaced buttons
+
         loginButton = new JButton("Login");
-        signUpButton = new JButton("Sign Up");
-        
-
-        //COLOR
-        loginButton.setBackground(new Color(135,206,250));
-        signUpButton.setBackground(new Color(135,206,250));
-        usernameField.setBorder(new LineBorder(new Color(51, 153, 255)));
-        passwordField.setBorder(new LineBorder(new Color(51, 153, 255)));
-       
-
-        //FONT
-        Font customFont = new Font("Segoe print", Font.BOLD, 15);
-        loginButton.setFont(customFont);
-        signUpButton.setFont(customFont);
-        usernameLabel.setFont(customFont);
-        passwordLabel.setFont(customFont);
-        usernameField.setFont(customFont);
-        passwordField.setFont(customFont);
-
-        welcomeLabel = new JLabel("Welcome to CashA e-Wallet");
-        welcomeLabel.setFont(customFont);
-        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        add(welcomeLabel, BorderLayout.NORTH);
-        
+        loginButton.setBackground(primaryColor);
+        loginButton.setForeground(Color.WHITE);
+        loginButton.setBorder(BorderFactory.createLineBorder(primaryColor, 10, true)); // Rounded corners
         loginButton.addActionListener(this);
-        signUpButton.addActionListener(this);
+        buttonPanel.add(loginButton);
 
-        panel.add(usernameLabel);
-        panel.add(usernameField);
-        panel.add(passwordLabel);
-        panel.add(passwordField);
-        panel.add(loginButton);
-        panel.add(signUpButton);
-        //panel.setBackground(new Color(192,192,192));
+        signUpButton = new JButton("Sign Up");
+        signUpButton.setBackground(primaryColor);
+        signUpButton.setForeground(Color.WHITE);
+        signUpButton.setBorder(BorderFactory.createLineBorder(primaryColor, 10, true)); // Rounded corners
+        signUpButton.addActionListener(this);
+        buttonPanel.add(signUpButton);
+
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.CENTER;
+        panel.add(buttonPanel, c);
 
         add(panel, BorderLayout.CENTER);
-
-        
-
         setVisible(true);
     }
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
