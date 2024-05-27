@@ -1,6 +1,8 @@
 ////// LOGIN WINDOW CLASS----------------------------------------------------------------------------------------------------------------------------------
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,11 +11,13 @@ public class LoginWindow extends JFrame implements ActionListener {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton, signUpButton;
+    private JLabel welcomeLabel;
 
     public LoginWindow() {
+        
         setTitle("Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(300, 200);
+        setSize(320, 200);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
@@ -24,7 +28,29 @@ public class LoginWindow extends JFrame implements ActionListener {
         passwordField = new JPasswordField();
         loginButton = new JButton("Login");
         signUpButton = new JButton("Sign Up");
+        
 
+        //COLOR
+        loginButton.setBackground(new Color(135,206,250));
+        signUpButton.setBackground(new Color(135,206,250));
+        usernameField.setBorder(new LineBorder(new Color(51, 153, 255)));
+        passwordField.setBorder(new LineBorder(new Color(51, 153, 255)));
+       
+
+        //FONT
+        Font customFont = new Font("Segoe print", Font.BOLD, 15);
+        loginButton.setFont(customFont);
+        signUpButton.setFont(customFont);
+        usernameLabel.setFont(customFont);
+        passwordLabel.setFont(customFont);
+        usernameField.setFont(customFont);
+        passwordField.setFont(customFont);
+
+        welcomeLabel = new JLabel("Welcome to CashA e-Wallet");
+        welcomeLabel.setFont(customFont);
+        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(welcomeLabel, BorderLayout.NORTH);
+        
         loginButton.addActionListener(this);
         signUpButton.addActionListener(this);
 
@@ -34,11 +60,16 @@ public class LoginWindow extends JFrame implements ActionListener {
         panel.add(passwordField);
         panel.add(loginButton);
         panel.add(signUpButton);
+        //panel.setBackground(new Color(192,192,192));
 
         add(panel, BorderLayout.CENTER);
 
+        
+
         setVisible(true);
     }
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
