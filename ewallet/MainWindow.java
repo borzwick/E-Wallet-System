@@ -1,16 +1,14 @@
-//////MAIN WINDOW CLASS------------------------------------------------------------------------------------------------------------------------
-
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.nio.file.*;
+import java.nio.file.Path;
 
 public class MainWindow extends JFrame implements ActionListener {
     private JLabel balanceLabel;
@@ -46,52 +44,80 @@ public class MainWindow extends JFrame implements ActionListener {
     public MainWindow(Account account) {
         this.account = account;
 
-        setTitle("CashA E-Wallet System");
+        setTitle("E-Wallet System");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setSize(600, 400);
         setLocationRelativeTo(null);
+        setResizable(false);
 
-        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+        // Set up color scheme
+        Color primaryColor = new Color(51, 102, 255);
+        Color secondaryColor = new Color(230, 230, 230);
 
-        cashInButton = new JButton("Cash In");
-        cashOutButton = new JButton("Cash Out");
-        checkHistoryButton = new JButton("Check History");
-        checkBalanceButton = new JButton("Check Balance");
-        logoutButton = new JButton("Logout");
+        // Create components
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(secondaryColor);
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(10, 10, 10, 10);
 
-        cashInButton.addActionListener(this);
-        cashOutButton.addActionListener(this);
-        checkHistoryButton.addActionListener(this);
-        checkBalanceButton.addActionListener(this);
-        logoutButton.addActionListener(this);
-
-        Font customFont = new Font("Segoe print", Font.BOLD, 15);
-        cashInButton.setFont(customFont);
-        cashOutButton.setFont(customFont);
-        checkBalanceButton.setFont(customFont);
-        checkHistoryButton.setFont(customFont);
-        logoutButton.setFont(customFont);
-
-        cashInButton.setBorder(new LineBorder(new Color(51, 153, 255)));
-        cashOutButton.setBorder(new LineBorder(new Color(51, 153, 255)));
-        checkBalanceButton.setBorder(new LineBorder(new Color(51, 153, 255)));
-        checkHistoryButton.setBorder(new LineBorder(new Color(51, 153, 255)));
-        logoutButton.setBorder(new LineBorder(new Color(51, 153, 255)));
-
-        panel.add(cashInButton);
-        panel.add(cashOutButton);
-        panel.add(checkHistoryButton);
-        panel.add(checkBalanceButton);
-        panel.add(logoutButton);
+        JLabel titleLabel = new JLabel("E-Wallet System");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(primaryColor);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.CENTER;
+        panel.add(titleLabel, c);
 
         balanceLabel = new JLabel("Current balance: Php. " + account.getBalance());
-        balanceLabel.setFont(customFont);
-        balanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        add(balanceLabel, BorderLayout.NORTH);
+        balanceLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        balanceLabel.setForeground(primaryColor);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.CENTER;
+        panel.add(balanceLabel, c);
+
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10)); // Grid of buttons
+
+        cashInButton = createButton("Cash In", primaryColor);
+        buttonPanel.add(cashInButton);
+
+        cashOutButton = createButton("Cash Out", primaryColor);
+        buttonPanel.add(cashOutButton);
+
+        checkHistoryButton = createButton("Check History", primaryColor);
+        buttonPanel.add(checkHistoryButton);
+
+        checkBalanceButton = createButton("Check Balance", primaryColor);
+        buttonPanel.add(checkBalanceButton);
+
+        logoutButton = createButton("Logout", new Color(255, 102, 102));
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.CENTER;
+        panel.add(logoutButton, c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 2;
+        c.anchor = GridBagConstraints.CENTER;
+        panel.add(buttonPanel, c);
 
         add(panel, BorderLayout.CENTER);
 
         setVisible(true);
+    }
+
+    // Helper method to create buttons with consistent styling
+    private JButton createButton(String text, Color color) {
+        JButton button = new JButton(text);
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
+        button.setBorder(BorderFactory.createLineBorder(color, 10, true)); // Fix: Use createLineBorder instead of createRoundedBorder
+        button.addActionListener(this);
+        return button;
     }
 
     // ActionListener implementation for handling button clicks
@@ -150,7 +176,6 @@ public class MainWindow extends JFrame implements ActionListener {
             // Placeholder for check balance operation
             JOptionPane.showMessageDialog(this, "Current balance: Php. " + account.getBalance());
         }
-
     }
 
     // Method to update the balance label
