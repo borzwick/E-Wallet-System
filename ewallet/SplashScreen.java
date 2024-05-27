@@ -10,7 +10,7 @@ public class SplashScreen extends JFrame {
         setUndecorated(true); // Remove window borders
 
         // Load the logo image
-        ImageIcon logoIcon = new ImageIcon("C:\\Users\\Chooey\\Downloads\\E-Wallet-System-main\\ewallet\\ewalletlogo.png");
+        ImageIcon logoIcon = new ImageIcon("C:\\Users\\Chooey\\Downloads\\E-Wallet-System-main\\ewallet\\ewalletlogo.png"); // file name of the logo
         Image logoImage = logoIcon.getImage();
         Image scaledLogoImage = logoImage.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
