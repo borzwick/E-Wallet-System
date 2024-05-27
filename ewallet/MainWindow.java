@@ -1,13 +1,13 @@
 //////MAIN WINDOW CLASS------------------------------------------------------------------------------------------------------------------------
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.nio.file.*;
@@ -46,7 +46,7 @@ public class MainWindow extends JFrame implements ActionListener {
     public MainWindow(Account account) {
         this.account = account;
 
-        setTitle("E-Wallet System");
+        setTitle("CashA E-Wallet System");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null);
@@ -65,6 +65,19 @@ public class MainWindow extends JFrame implements ActionListener {
         checkBalanceButton.addActionListener(this);
         logoutButton.addActionListener(this);
 
+        Font customFont = new Font("Segoe print", Font.BOLD, 15);
+        cashInButton.setFont(customFont);
+        cashOutButton.setFont(customFont);
+        checkBalanceButton.setFont(customFont);
+        checkHistoryButton.setFont(customFont);
+        logoutButton.setFont(customFont);
+
+        cashInButton.setBorder(new LineBorder(new Color(51, 153, 255)));
+        cashOutButton.setBorder(new LineBorder(new Color(51, 153, 255)));
+        checkBalanceButton.setBorder(new LineBorder(new Color(51, 153, 255)));
+        checkHistoryButton.setBorder(new LineBorder(new Color(51, 153, 255)));
+        logoutButton.setBorder(new LineBorder(new Color(51, 153, 255)));
+
         panel.add(cashInButton);
         panel.add(cashOutButton);
         panel.add(checkHistoryButton);
@@ -72,6 +85,7 @@ public class MainWindow extends JFrame implements ActionListener {
         panel.add(logoutButton);
 
         balanceLabel = new JLabel("Current balance: Php. " + account.getBalance());
+        balanceLabel.setFont(customFont);
         balanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(balanceLabel, BorderLayout.NORTH);
 
@@ -136,6 +150,7 @@ public class MainWindow extends JFrame implements ActionListener {
             // Placeholder for check balance operation
             JOptionPane.showMessageDialog(this, "Current balance: Php. " + account.getBalance());
         }
+
     }
 
     // Method to update the balance label
