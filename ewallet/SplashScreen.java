@@ -8,11 +8,12 @@ public class SplashScreen extends JFrame {
         setSize(400, 300);
         setLocationRelativeTo(null);
         setUndecorated(true); // Remove window borders
+        getContentPane().setBackground(Color.WHITE);
 
         // Load the logo image
-        ImageIcon logoIcon = new ImageIcon("C:\\Users\\Chooey\\Downloads\\E-Wallet-System-main\\ewallet\\ewalletlogo.png"); // file name of the logo
+        ImageIcon logoIcon = new ImageIcon("C:\\Users\\Chooey\\Downloads\\E-Wallet-System-main\\ewallet\\coarta1.png"); // insert directory of logo here
         Image logoImage = logoIcon.getImage();
-        Image scaledLogoImage = logoImage.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+        Image scaledLogoImage = logoImage.getScaledInstance(350, 350, Image.SCALE_SMOOTH);
         ImageIcon scaledLogoIcon = new ImageIcon(scaledLogoImage);
         JLabel logoLabel = new JLabel(scaledLogoIcon);
         logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
