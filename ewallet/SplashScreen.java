@@ -1,3 +1,5 @@
+////// SPLASH SCREEN CLASS----------------------------------------------------------------------------------------------------------------------------------
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,15 +25,11 @@ public class SplashScreen extends JFrame {
         setVisible(true);
 
         // Create a timer to close the splash screen after a delay and show the login window
-        Timer timer = new Timer(3000, e -> {
+        Timer timer = new Timer(1500, e -> {
             dispose(); // Close the splash screen
             new LoginWindow(); // Open the login window
         });
         timer.setRepeats(false); // Only execute once
         timer.start(); // Start the timer
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(SplashScreen::new);
     }
 }
