@@ -46,11 +46,14 @@ public class MainWindow extends JFrame implements ActionListener {
     public MainWindow(Account account) {
         this.account = account;
 
-        setTitle("E-Wallet System");
+        setTitle("Coarta Main Menu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
         setLocationRelativeTo(null);
         setResizable(false);
+
+        ImageIcon icon = new ImageIcon("C:\\Users\\Chooey\\Downloads\\E-Wallet-System-main\\ewallet\\coarta2.png"); // Specify the path to your icon here
+        setIconImage(icon.getImage());
 
         // Set up color scheme
         Color primaryColor = new Color(51, 102, 255);
@@ -62,7 +65,7 @@ public class MainWindow extends JFrame implements ActionListener {
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 10, 10, 10);
 
-        JLabel titleLabel = new JLabel("E-Wallet System");
+        JLabel titleLabel = new JLabel("Coarta");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(primaryColor);
         c.gridx = 0;
@@ -131,7 +134,7 @@ public class MainWindow extends JFrame implements ActionListener {
             new LoginWindow().setVisible(true); // Open the login window
         } else if (e.getSource() == cashInButton) {
             // Placeholder for cash-in operation
-            String amountStr = JOptionPane.showInputDialog(this, "Enter amount to cash in:");
+            String amountStr = JOptionPane.showInputDialog(this, "Enter amount to cash in:", "Cash In", JOptionPane.QUESTION_MESSAGE);
             if (amountStr != null && !amountStr.isEmpty()) {
                 try {
                     double amount = Double.parseDouble(amountStr);
@@ -139,18 +142,18 @@ public class MainWindow extends JFrame implements ActionListener {
                         account.setBalance(account.getBalance() + amount);
                         transactionHistory.add("Cash In: Php. " + amount);
                         saveTransactionHistoryToFile();  // Save transaction history after cash-in
-                        JOptionPane.showMessageDialog(this, "Cash in successful. New balance: Php. " + account.getBalance());
+                        JOptionPane.showMessageDialog(this, "Cash in successful. New balance: Php. " + account.getBalance(), "Cash In", JOptionPane.INFORMATION_MESSAGE);
                         updateBalanceLabel();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Invalid amount. Please enter a positive value.");
+                        JOptionPane.showMessageDialog(this, "Invalid amount. Please enter a positive value.", "Cash In", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid number.");
+                    JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid number.", "Cash In", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else if (e.getSource() == cashOutButton) {
             // Placeholder for cash-out operation
-            String amountStr = JOptionPane.showInputDialog(this, "Enter amount to cash out:");
+            String amountStr = JOptionPane.showInputDialog(this, "Enter amount to cash out:", "Cash Out", JOptionPane.QUESTION_MESSAGE);
             if (amountStr != null && !amountStr.isEmpty()) {
                 try {
                     double amount = Double.parseDouble(amountStr);
@@ -158,13 +161,13 @@ public class MainWindow extends JFrame implements ActionListener {
                         account.setBalance(account.getBalance() - amount);
                         transactionHistory.add("Cash Out: Php. " + amount);
                         saveTransactionHistoryToFile();  // Save transaction history after cash-out
-                        JOptionPane.showMessageDialog(this, "Cash out successful. New balance: Php. " + account.getBalance());
+                        JOptionPane.showMessageDialog(this, "Cash out successful. New balance: Php. " + account.getBalance(), "Cash Out", JOptionPane.INFORMATION_MESSAGE);
                         updateBalanceLabel();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Invalid amount or insufficient balance.");
+                        JOptionPane.showMessageDialog(this, "Invalid amount or insufficient balance.", "Cash Out", JOptionPane.ERROR_MESSAGE);
                     }
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid number.");
+                    JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid number.", "Cash Out", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } else if (e.getSource() == checkHistoryButton) {
@@ -173,10 +176,10 @@ public class MainWindow extends JFrame implements ActionListener {
             for (String transaction : transactionHistory) {
                 historyMsg += transaction + "\n";
             }
-            JOptionPane.showMessageDialog(this, historyMsg);
+            JOptionPane.showMessageDialog(this, historyMsg, "Transaction History", JOptionPane.INFORMATION_MESSAGE);
         } else if (e.getSource() == checkBalanceButton) {
             // Placeholder for check balance operation
-            JOptionPane.showMessageDialog(this, "Current balance: Php. " + account.getBalance());
+            JOptionPane.showMessageDialog(this, "Current balance: Php. " + account.getBalance(), "Check Balance", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
