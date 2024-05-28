@@ -1,7 +1,7 @@
 import javax.swing.SwingUtilities;
 
-public class Main {
+// The main method to start the application
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new SplashScreen());
+        SwingUtilities.invokeLater(SplashScreen::new);  // Create and show the splash screen on the Event Dispatch Thread
     }
 }
